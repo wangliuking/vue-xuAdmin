@@ -10,14 +10,23 @@ import 'font-awesome/css/font-awesome.css'
 import App from './App.vue'
 import router from './router'
 import store from './vuex'
+import axios from 'axios'
 import i18n from './i18n/i18n'
+import Cookies from 'js-cookie'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 
+Vue.prototype.$axios = axios
+
 //  获取角色信息，根据用户权限动态加载路由
 router.beforeEach((to, from, next) => {
+  /*console.log(to)
+  console.log(from)
+  console.log(store)
   console.log(store.getters.token)
+  console.log(store.getters.info)
+  console.log(store.getters.info.role)*/
   // debugger
 
   if (store.getters.token) {
@@ -30,7 +39,7 @@ router.beforeEach((to, from, next) => {
         !async function getAddRouters () {
           await store.dispatch('getInfo', store.getters.token)
           await store.dispatch('newRoutes', store.getters.info.role)
-          console.log(store.getters.addRouters)
+          //console.log(store.getters.addRouters)
           await router.addRoutes(store.getters.addRouters)
           next({path: '/index'})
         }()
@@ -52,7 +61,6 @@ router.beforeEach((to, from, next) => {
       next()
     }
     next({path: '/login'})
-
   }
 })
 
@@ -61,6 +69,7 @@ new Vue({
   el: '#app',
   router,
   store,
+  axios,
   i18n,
   render: h => h(App),
   components: {App},

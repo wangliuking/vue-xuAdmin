@@ -86,28 +86,38 @@ export default {
         return false
       } else {
         // 将 username 设置为 token 存储在 store，仅为测试效果，实际存储 token 以后台返回为准
-        that.$store.dispatch('setToken', that.loginForm.username).then(() => {
-          that.$router.push({path: '/'})
-        }).catch(res => {
-          that.$message({
-            showClose: true,
-            message: res,
-            type: 'error'
-          })
+        this.$axios('http://183.221.117.37:5555/camera/getEMHStatus?bsId=100').then(res=>{
+          console.log(res)
+          if(res.data[0].singleType === 0){
+
+            that.$store.dispatch('setToken', that.loginForm.username).then(() => {
+              that.$router.push({path: '/'})
+            }).catch(res => {
+              that.$message({
+                showClose: true,
+                message: res,
+                type: 'error'
+              })
+            })
+
+          }else{
+            this.message(res)
+          }
+
         })
       }
     },
-    message() {
+    message(res) {
       const h = this.$createElement;
       this.$notify({
         title: '账号密码',
-        message: h('i', { style: 'color: teal'}, '账号密码可以随意填写，为了测试效果填写的账号将会被存储为临时假 token'),
+        message: h('i', { style: 'color: teal'}, res.data[0].updateTime),
         duration: 6000
       });
     },
   },
   mounted() {
-    this.message()
+    //this.message()
   }
 }
 </script>
