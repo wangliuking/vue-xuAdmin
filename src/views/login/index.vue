@@ -8,8 +8,8 @@
       </div>
       <div class="loginBox">
         <div class="loginCon">
-          <p class="title">vue-xuadmin权限管理后台模板</p>
-          <p class="title">前台: vue + element-ui</p>
+          <p class="title">公网对讲后台管理系统</p>
+          <p class="title">测试版本: vue + element-ui</p>
           <el-card shadow="always" class="login-module" v-if="smdl">
             <div slot="header" class="clearfix formTitlt">
               <span>密码登录</span>
@@ -64,69 +64,71 @@
   </div>
 </template>
 <script>
-export default {
-  data () {
-    return {
-      smdl: true,
-      loginForm: {
-        username: 'vue-xuadmin',
-        password: '123456'
+  export default {
+    data() {
+      return {
+        smdl: true,
+        loginForm: {
+          username: '',
+          password: ''
+        }
       }
-    }
-  },
-  methods: {
-    submitForm () {
-      let that = this
-      if (this.loginForm.username === '' || this.loginForm.password === '') {
-        this.$message({
-          showClose: true,
-          message: '账号或密码不能为空',
-          type: 'error'
-        })
-        return false
-      } else {
-        // 将 username 设置为 token 存储在 store，仅为测试效果，实际存储 token 以后台返回为准
-        this.$axios('http://183.221.117.37:5555/camera/getEMHStatus?bsId=100').then(res=>{
-          console.log(res)
-          if(res.data[0].singleType === 0){
+    },
+    methods: {
+      submitForm() {
+        let that = this
+        if (this.loginForm.username === '' || this.loginForm.password === '') {
+          this.$message({
+            showClose: true,
+            message: '账号或密码不能为空',
+            type: 'error'
+          })
+          return false
+        } else {
+          let formData = new FormData();
+          formData.append('account', this.loginForm.username);
+          formData.append('password', this.loginForm.password);
 
-            that.$store.dispatch('setToken', that.loginForm.username).then(() => {
-              that.$router.push({path: '/'})
-            }).catch(res => {
-              that.$message({
-                showClose: true,
-                message: res,
-                type: 'error'
+          this.$axios.post('http://localhost:8081/auth/user/login', formData).then(res => {
+            console.log(res)
+            if (res.data.data.accessToken) {
+              that.$store.dispatch('setToken', res.data.data.accessToken).then(() => {
+                that.$router.push({path: '/'})
+              }).catch(res => {
+                that.$message({
+                  showClose: true,
+                  message: res,
+                  type: 'error'
+                })
               })
-            })
 
-          }else{
-            this.message(res)
-          }
+            } else {
+              this.message(res)
+            }
 
-        })
-      }
+          })
+        }
+      },
+      message(res) {
+        const h = this.$createElement;
+        this.$notify({
+          title: '账号密码',
+          message: h('i', {style: 'color: teal'}, res.data[0].updateTime),
+          duration: 6000
+        });
+      },
     },
-    message(res) {
-      const h = this.$createElement;
-      this.$notify({
-        title: '账号密码',
-        message: h('i', { style: 'color: teal'}, res.data[0].updateTime),
-        duration: 6000
-      });
-    },
-  },
-  mounted() {
-    //this.message()
+    mounted() {
+      //this.message()
+    }
   }
-}
 </script>
 <style lang="scss">
   #login {
     width: 100%;
     height: 100%;
     background-color: #2d3a4b;
-    .loginConbox{
+    .loginConbox {
       background: #2d3a4b;
     }
     .header {
@@ -134,13 +136,13 @@ export default {
       position: relative;
       background: #2d3a4b;
       /*border-bottom: 1px solid rgba(255, 255, 255, 0.3);*/
-      .logo{
+      .logo {
         margin-left: 30px;
         width: 500px;
         float: left;
         height: 40px;
         padding-top: 10px;
-        img{
+        img {
           height: 100%;
         }
       }
@@ -162,14 +164,14 @@ export default {
         .el-card__header {
           border-bottom: 0px;
         }
-        .title{
+        .title {
           font-size: 36px;
           font-weight: 600;
           color: #ffffff;
           width: 500px;
           float: left;
           margin-top: 0px;
-          &:first-child{
+          &:first-child {
             font-size: 34px;
             margin-top: 50px;
             margin-bottom: 30px;

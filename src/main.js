@@ -19,6 +19,18 @@ Vue.use(ElementUI)
 
 Vue.prototype.$axios = axios
 
+//http request 封装请求头拦截器
+axios.interceptors.request.use(config => {
+  let token = store.state.token;
+  if (token) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
+    config.headers['Authorization'] = 'Bearer ' + token
+    console.log('interceptors config=', config)
+  }
+  return config
+}, error => {
+  return Promise.reject(error)
+})
+
 //  获取角色信息，根据用户权限动态加载路由
 router.beforeEach((to, from, next) => {
   /*console.log(to)
