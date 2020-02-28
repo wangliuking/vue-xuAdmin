@@ -32,7 +32,9 @@
       layoutAside
     },
     created () {
-      this.$router.push('/index')
+      this.$router.push('/index').catch(err => {
+        console.log('输出报错',err)
+      })
     }
   }
 </script>
@@ -100,6 +102,8 @@
 
   #elmain {
     background-color: #f0f2f5;
+    width:100%;
+    height:100%;
   }
 
 

@@ -9,7 +9,7 @@
       <div class="loginBox">
         <div class="loginCon">
           <p class="title">公网对讲后台管理系统</p>
-          <p class="title">测试版本: vue + element-ui</p>
+          <p class="title">测试版本: V1.0</p>
           <el-card shadow="always" class="login-module" v-if="smdl">
             <div slot="header" class="clearfix formTitlt">
               <span>密码登录</span>
@@ -86,12 +86,13 @@
           return false
         } else {
           let formData = new FormData();
-          formData.append('account', this.loginForm.username);
+          formData.append('username', this.loginForm.username);
           formData.append('password', this.loginForm.password);
 
-          this.$axios.post('http://localhost:8081/auth/user/login', formData).then(res => {
+          this.$axios.post('auth/user/login', formData).then(res => {
             console.log(res)
-            if (res.data.data.accessToken) {
+            //console.log(res.data.data.accessToken)
+            if (res.data.data) {
               that.$store.dispatch('setToken', res.data.data.accessToken).then(() => {
                 that.$router.push({path: '/'})
               }).catch(res => {
@@ -111,9 +112,12 @@
       },
       message(res) {
         const h = this.$createElement;
+        console.log("^^^^^^^^^^^^^^^")
+        console.log(res)
         this.$notify({
-          title: '账号密码',
-          message: h('i', {style: 'color: teal'}, res.data[0].updateTime),
+          position: 'top-right',
+          title: '错误码：'+res.data.code,
+          message: h('i', {style: 'color: teal'}, res.data.message),
           duration: 6000
         });
       },

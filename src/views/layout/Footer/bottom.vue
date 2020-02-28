@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>Copyright © 2018 xuAdmin.</p>
+    <p>Copyright © 2020 中航信虹</p>
   </div>
 </template>
 

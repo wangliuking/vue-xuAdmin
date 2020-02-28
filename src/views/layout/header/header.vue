@@ -10,15 +10,15 @@
         <li>
           <langSelect></langSelect>
         </li>
-        <li>{{ $t(`role.${this.$store.getters.info.role}`) }}</li>
+        <li>{{type}}</li>
         <li>
           <el-dropdown @command="handleCommand">
                   <span class="el-dropdown-link">
-                    wlk<i class="el-icon-arrow-down el-icon--right"></i>
+                    {{userName}}<i class="el-icon-arrow-down el-icon--right"></i>
                   </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="a">{{ $t('userDropdownMenu.basicInfor') }}</el-dropdown-item>
-              <el-dropdown-item command="b">{{ $t('userDropdownMenu.changePassword') }}</el-dropdown-item>
+              <!--<el-dropdown-item command="a">{{ $t('userDropdownMenu.basicInfor') }}</el-dropdown-item>
+              <el-dropdown-item command="b">{{ $t('userDropdownMenu.changePassword') }}</el-dropdown-item>-->
               <el-dropdown-item command="logout" divided>{{ $t('userDropdownMenu.logout') }}</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -38,17 +38,28 @@
   export default {
     name: 'Header',
     components: {tabNav, langSelect},
-    data () {
+    data() {
       return {
         isfullScreen: true,
-        avatar: './static/images/icon.jpg'
+        avatar: './static/images/icon.jpg',
+        type: '',
+        userId: '',
+        userName: ''
       }
     },
+    mounted() {
+      let type = this.$store.getters.info.type
+      let userId = this.$store.getters.info.userId
+      let userName = this.$store.getters.info.userName
+      this.type = type === 2 ? '超级管理员' : type === 1 ? '管理员' : '普通用户'
+      this.userId = userId
+      this.userName = userName
+    },
     methods: {
-      collapse () {
+      collapse() {
         this.$store.dispatch('collapse')
       },
-      fullScreen () {
+      fullScreen() {
         if (this.isfullScreen) {
           var docElm = document.documentElement
           if (docElm.requestFullscreen) {
@@ -74,7 +85,7 @@
           this.isfullScreen = true
         }
       },
-      handleCommand (command) {
+      handleCommand(command) {
         if (command === 'logout') {
           Cookies.remove('token');
           location.reload()

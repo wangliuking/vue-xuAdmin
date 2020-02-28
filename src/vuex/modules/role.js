@@ -1,6 +1,7 @@
 import store from '../index'
 import router from '../../router/index'
 import axios from 'axios'
+import Cookies from "js-cookie";
 
 export default {
   state: {
@@ -9,8 +10,10 @@ export default {
   mutations: {
     getInfo(state, res) {
       state.info = {
-        role: res.data.data.role.role,
-        permissions: res.data.data.role.name
+        role: res.data.data.power,
+        userId: res.data.data.userId,
+        userName: res.data.data.userName,
+        type: res.data.data.type
       }
       sessionStorage.setItem('info', JSON.stringify(store.getters.info))
     },
@@ -27,9 +30,15 @@ export default {
   },
   actions: {
     async getInfo({commit}, token) {
-      let res =  await axios.get('http://localhost:8081/auth/userByAccount?token=' + token)
-      console.log(res)
-      commit('getInfo', res)
+      await axios.get('auth/userByAccount?token=' + token).then((res)=>{
+        console.log("res!!!!!!!!!!!!!!!!")
+        console.log(res)
+        commit('getInfo', res);
+      }).catch((mes)=>{
+        Cookies.remove('token')
+        location.reload()
+      })
+
     },
     setRole({commit}, options) {
       // 权限测试

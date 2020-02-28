@@ -6,8 +6,9 @@
  */
 
 import enLocale from 'element-ui/lib/locale/lang/en'
+
 const en = {
-  routeNmae: {
+  routeName: {
     home: 'home',
     article: 'article',
     publishArticle: 'publishArticle',
@@ -22,6 +23,18 @@ const en = {
     table: 'table',
     multiDataTable: 'multiDataTable',
     filterTable: 'filterTable',
+    userList: 'userList',
+    groupList: 'groupList',
+    user2groupList: 'user2groupList',
+    bdList: 'bdList',
+    group2bd: 'group2bd',
+    systemParam: 'systemParam',
+    gpsUser: 'gpsUser',
+    smsList: 'smsList',
+    callInfoList: 'callInfoList',
+    webuserList: 'webuserList',
+    userBookList: 'userBookList',
+    structure: 'structure',
     dragSort: 'dragSort',
     upload: 'upload',
     fileUpload: 'fileUpload',
@@ -39,7 +52,7 @@ const en = {
     'menu4-2': 'menu4-2',
     'menu5-1': 'menu5-1',
     systemSettings: 'systemSettings',
-    navMenu : 'navMenu',
+    navMenu: 'navMenu',
   },
   rightMenu: {
     close: 'close',

@@ -13,8 +13,9 @@ const store = new Vuex.Store({
   },
   mutations: {
     setToken (state, token) {
+      const inFifteenMinutes = new Date(new Date().getTime() + 60 * 60 * 1000);
       state.token = token
-      Cookies.set('token', token ,{ expires: 1/24 });
+      Cookies.set('token', token ,{ expires: inFifteenMinutes })
     }
   },
   actions: {
